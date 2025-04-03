@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import React from 'react';
+
+// IMPLEMENTED FEATURE 2: Bold the currently selected item in the move list.
 
 function Square({ value, onSquareClick }) {
   return (
@@ -69,18 +72,21 @@ export default function Game() {
   }
 
   const moves = history.map((squares, move) => {
-    let description;
-    if (move > 0) {
-      description = 'Go to move #' + move;
-    } else {
-      description = 'Go to game start';
-    }
+    const description = move > 0 ? 'Go to move #' + move : 'Go to game start';
+    const isCurrent = move === currentMove;
+
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
+        <button
+          onClick={() => jumpTo(move)}
+          style={{ fontWeight: isCurrent ? 'bold' : 'normal' }}
+        >
+          {description}
+        </button>
       </li>
     );
   });
+
   return (
     <div className="game">
       <div className="game-board">
@@ -92,6 +98,7 @@ export default function Game() {
     </div>
   );
 }
+
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
